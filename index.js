@@ -1,6 +1,5 @@
-// run `node index.js` in the terminal
-
 const express = require('express');
+const Joi = require('joi');
 
 var app = express();
 
@@ -18,7 +17,7 @@ app.get('/', (req, res) => {
 
 // to get all the courses
 app.get('/api/courses', (req, res) => {
-  res.send(courses);
+  res.status(201).send(courses);
 });
 
 //to get the id through the route parameters
@@ -46,6 +45,15 @@ app.get('/api/courses/:id', (req, res) => {
 
 // to post a course
 app.post('/api/courses', (req, res) => {
+  //error handling with joi library
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+  const result = schema.validate(req.body);
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+  }
+
   //1. set the structure of the course
   const course = {
     id: courses.length + 1,
@@ -58,6 +66,6 @@ app.post('/api/courses', (req, res) => {
 });
 
 //to get the query params
-app.listen(5000, () => {
-  console.log('Connected to port 5000');
+app.listen(6000, () => {
+  console.log('Connected to port 6000');
 });
