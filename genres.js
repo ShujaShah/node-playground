@@ -38,6 +38,7 @@ app.put('/api/genres/:id', (req, res) => {
   res.status(201).send(genre);
 });
 
+//deleting a genre
 app.delete('/api/genres/:id', (req, res) => {
   const genre = genres.find((g) => g.id === parseInt(req.params.id));
   if (!genre) return res.status(404).send('Genre with the given id not found');
