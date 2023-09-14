@@ -41,12 +41,9 @@ app.get('/api/courses/:id', (req, res) => {
 // to post a course
 app.post('/api/courses', (req, res) => {
   //error handling with joi library
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-  });
-  const result = schema.validate(req.body);
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
+  const { error } = validateCourse(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
   }
 
   //1. set the structure of the course
@@ -67,18 +64,23 @@ app.put('/api/courses/:id', (req, res) => {
     res.status(400).send('course with the given id doesnot exits');
   }
   //validate the request
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-  });
-  const result = schema.validate(req.body);
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
+  const { error } = validateCourse(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
   }
   //update the course
   course.name = req.body.name;
   //return the updated course
   res.send(course);
 });
+
+//validation
+function validateCourse(course) {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+  return schema.validate(course);
+}
 
 app.listen(6000, () => {
   console.log('Connected to port 6000');
