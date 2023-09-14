@@ -42,9 +42,7 @@ app.get('/api/courses/:id', (req, res) => {
 app.post('/api/courses', (req, res) => {
   //error handling with joi library
   const { error } = validateCourse(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   //1. set the structure of the course
   const course = {
@@ -65,9 +63,8 @@ app.put('/api/courses/:id', (req, res) => {
 
   //validate the request
   const { error } = validateCourse(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-  }
+  if (error) return res.status(400).send(error.details[0].message);
+
   //update the course
   course.name = req.body.name;
   //return the updated course
