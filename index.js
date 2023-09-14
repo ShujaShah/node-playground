@@ -20,11 +20,6 @@ app.get('/api/courses', (req, res) => {
   res.status(201).send(courses);
 });
 
-//to get the id through the route parameters
-// app.get('/api/courses/:id/', (req, res) => {
-//   res.send(req.params.id);
-// });
-
 //to get the posts with the given month and given year
 app.get('/api/posts/:month/:year', (req, res) => {
   //res.send(req.params); //req.params sends all the params defined in the route
@@ -65,7 +60,26 @@ app.post('/api/courses', (req, res) => {
   res.send(course);
 });
 
-//to get the query params
+app.put('/api/courses/:id', (req, res) => {
+  //find the course if it exists
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+  if (!course) {
+    res.status(400).send('course with the given id doesnot exits');
+  }
+  //validate the request
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+  const result = schema.validate(req.body);
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+  }
+  //update the course
+  course.name = req.body.name;
+  //return the updated course
+  res.send(course);
+});
+
 app.listen(6000, () => {
   console.log('Connected to port 6000');
 });
