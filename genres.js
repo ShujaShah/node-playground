@@ -28,6 +28,24 @@ app.post('/api/genres', (req, res) => {
   res.status(201).send(genre);
 });
 
+//Updating a Genre
+app.put('/api/genres/:id', (req, res) => {
+  const genre = genres.find((g) => g.id === parseInt(req.params.id));
+  if (!genre) return res.status(404).send('Genre with the given id not found');
+  const { error } = validateGenre(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  genre.name = req.body.name;
+  res.status(201).send(genre);
+});
+
+app.delete('/api/genres/:id', (req, res) => {
+  const genre = genres.find((g) => g.id === parseInt(req.params.id));
+  if (!genre) return res.status(404).send('Genre with the given id not found');
+  const index = genres.indexOf(genre);
+  genres.splice(index, 1);
+  res.status(201).send(genre);
+});
+
 //Defining the validation
 function validateGenre(genre) {
   const schema = Joi.object({
