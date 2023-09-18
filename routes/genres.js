@@ -1,10 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
-const morgan = require('morgan');
 
-var app = express();
-app.use(express.json());
-app.use(morgan('tiny'));
+const router = express.Router();
 
 const genres = [
   { id: 1, name: 'Action' },
@@ -14,12 +11,12 @@ const genres = [
 ];
 
 //Get All Genres
-app.get('/api/genres', (req, res) => {
+router.get('/api/genres', (req, res) => {
   res.status(201).send(genres);
 });
 
 //Create a Genre
-app.post('/api/genres', (req, res) => {
+router.post('/api/genres', (req, res) => {
   const { error } = validateGenre(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const genre = {
@@ -31,7 +28,7 @@ app.post('/api/genres', (req, res) => {
 });
 
 //Updating a Genre
-app.put('/api/genres/:id', (req, res) => {
+router.put('/api/genres/:id', (req, res) => {
   const genre = genres.find((g) => g.id === parseInt(req.params.id));
   if (!genre) return res.status(404).send('Genre with the given id not found');
   const { error } = validateGenre(req.body);
@@ -41,7 +38,7 @@ app.put('/api/genres/:id', (req, res) => {
 });
 
 //deleting a genre
-app.delete('/api/genres/:id', (req, res) => {
+router.delete('/api/genres/:id', (req, res) => {
   const genre = genres.find((g) => g.id === parseInt(req.params.id));
   if (!genre) return res.status(404).send('Genre with the given id not found');
   const index = genres.indexOf(genre);
@@ -57,6 +54,4 @@ function validateGenre(genre) {
   return schema.validate(genre);
 }
 
-app.listen(6000, () => {
-  console.log('Listening on Port 6000');
-});
+module.exports = router;
