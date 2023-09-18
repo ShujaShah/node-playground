@@ -8,10 +8,6 @@ const courses = [
   { id: 3, name: 'course 3' },
 ];
 
-router.get('/', (req, res) => {
-  res.send('it works like a charm!');
-});
-
 // to get all the courses
 router.get('/', (req, res) => {
   res.status(201).send(courses);
