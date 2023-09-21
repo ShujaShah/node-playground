@@ -71,8 +71,8 @@ async function updateCourse(id) {
     isPublished: false,
     author: 'Shuja Ashraf',
   });
-  course.save();
-  console.log(course);
+  const result = await course.save();
+  console.log(result);
 }
 
 updateCourse('650a9bfd98a2740479da91fa');
