@@ -35,6 +35,9 @@ async function createCourse() {
 async function getCourses() {
   const result = await Course.find({
     author: 'Shuja',
+    // author: /^Shuja/   //starts with Shuja
+    // author: /Shah$/i   // ends with Shah
+    // author: /.*Shuja.*/ // contains Shuja
   })
     .limit(10)
     .select({ name: 1, tags: 1 }); //returns all the courses
