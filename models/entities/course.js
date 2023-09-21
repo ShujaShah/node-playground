@@ -19,9 +19,9 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    name: 'React',
-    author: 'Shuja',
-    tags: ['Frontend', 'Javascript'],
+    name: 'Redux',
+    author: 'Shah',
+    tags: ['frontend', 'redux'],
     isPublished: true,
   });
 
@@ -32,15 +32,34 @@ async function createCourse() {
 
 //createCourse();
 
-async function getCourses() {
+// async function getCourses() {
+//   const result = await Course.find({
+//     author: 'Shuja',
+//     // author: /^Shuja/   //starts with Shuja
+//     // author: /Shah$/i   // ends with Shah
+//     // author: /.*Shuja.*/ // contains Shuja
+//   })
+//     .skip()
+//     .limit(10)
+//     .select({ name: 1, tags: 1 }); //returns all the courses
+//   //.count()  // to get the no. of documents
+//   console.log(result);
+// }
+// getCourses();
+
+// Exercise
+// get all the published backend courses
+// Sort them by their name
+// Pick only their name and author
+// display them
+
+async function getBackEndCourses() {
   const result = await Course.find({
-    author: 'Shuja',
-    // author: /^Shuja/   //starts with Shuja
-    // author: /Shah$/i   // ends with Shah
-    // author: /.*Shuja.*/ // contains Shuja
+    tags: 'backend', // choosing only backend courses
   })
-    .limit(10)
-    .select({ name: 1, tags: 1 }); //returns all the courses
+    .select({ name: 1, author: 1 }) // selecting only name and author
+    .sort({ name: 1 }); // sorting in ascending order
   console.log(result);
 }
-getCourses();
+
+getBackEndCourses();
