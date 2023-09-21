@@ -62,4 +62,17 @@ async function getBackEndCourses() {
   console.log(result);
 }
 
-getBackEndCourses();
+//getBackEndCourses();
+
+async function updateCourse(id) {
+  const course = await Course.findById(id);
+  if (!course) return;
+  course.set({
+    isPublished: false,
+    author: 'Shuja Ashraf',
+  });
+  course.save();
+  console.log(course);
+}
+
+updateCourse('650a9bfd98a2740479da91fa');
