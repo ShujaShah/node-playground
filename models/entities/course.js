@@ -33,7 +33,11 @@ async function createCourse() {
 //createCourse();
 
 async function getCourses() {
-  const result = await Course.find(); //returns all the courses
+  const result = await Course.find({
+    author: 'Shuja',
+  })
+    .limit(10)
+    .select({ name: 1, tags: 1 }); //returns all the courses
   console.log(result);
 }
 getCourses();
