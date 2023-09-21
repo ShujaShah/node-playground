@@ -17,6 +17,7 @@ const courseSchema = new mongoose.Schema({
 });
 const Course = mongoose.model('Course', courseSchema);
 
+//creating a course
 async function createCourse() {
   const course = new Course({
     name: 'Redux',
@@ -53,6 +54,7 @@ async function createCourse() {
 // Pick only their name and author
 // display them
 
+//getting courses
 async function getBackEndCourses() {
   const result = await Course.find({
     tags: 'backend', // choosing only backend courses
@@ -64,6 +66,7 @@ async function getBackEndCourses() {
 
 //getBackEndCourses();
 
+//updating a course
 async function updateCourse(id) {
   const course = await Course.findById(id);
   if (!course) return;
@@ -75,4 +78,19 @@ async function updateCourse(id) {
   console.log(result);
 }
 
-updateCourse('650a9bfd98a2740479da91fa');
+//updateCourse('650a9bfd98a2740479da91fa');
+
+//deleting a course
+async function removeCourse(id) {
+  const course = await Course.findById(id);
+  if (!course) {
+    console.log('Course with the given id not found');
+    return;
+  }
+  course.deleteOne({
+    _id: id,
+  });
+  console.log(course);
+}
+
+//removeCourse('650bec94cad9fb96b0acf495');
