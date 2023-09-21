@@ -19,9 +19,9 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    name: 'NodeJS',
+    name: 'React',
     author: 'Shuja',
-    tags: ['node', 'backend'],
+    tags: ['Frontend', 'Javascript'],
     isPublished: true,
   });
 
@@ -30,4 +30,10 @@ async function createCourse() {
   console.log(result);
 }
 
-createCourse();
+//createCourse();
+
+async function getCourses() {
+  const result = await Course.find(); //returns all the courses
+  console.log(result);
+}
+getCourses();
