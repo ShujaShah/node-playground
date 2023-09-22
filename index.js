@@ -1,24 +1,27 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
+const HomeRouter = require('./routes/home');
 const CoursesRouter = require('./routes/courses');
 const GenresRouter = require('./routes/genres');
-const HomeRouter = require('./routes/home');
 
 var app = express();
-app.use(morgan('tiny'));
 app.use(express.json());
+app.use(morgan('tiny'));
 
-app.use('/', HomeRouter);
-app.use('/api/course', CoursesRouter);
-app.use('/api/genres', GenresRouter);
-
+let mongo_url = process.env.MONGO_URL;
 mongoose
-  .connect('mongodb+srv://shuja:shuja@cluster0.dn2hzu3.mongodb.net/')
+  .connect(mongo_url)
   .then(() => console.log('Connected to the Database...'))
   .catch((err) => console.log('Error connecting the database', err));
 
-app.listen(6000, () => {
-  console.log('Connected to port 6000');
+app.use('/', HomeRouter);
+app.use('/api/courses', CoursesRouter);
+app.use('/api/genres', GenresRouter);
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Connected to port ${port}`);
 });
