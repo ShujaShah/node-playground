@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const HomeRouter = require('./routes/home');
 const CoursesRouter = require('./routes/courses');
+const CustomersRouter = require('./routes/customers');
 const GenresRouter = require('./routes/genres');
 
 var app = express();
@@ -19,6 +20,7 @@ mongoose
 
 app.use('/', HomeRouter);
 app.use('/api/courses', CoursesRouter);
+app.use('/api/customers', CustomersRouter);
 app.use('/api/genres', GenresRouter);
 
 const port = process.env.PORT || 3000;
