@@ -3,10 +3,9 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const HomeRouter = require('./routes/home');
-const CoursesRouter = require('./routes/courses');
-const CustomersRouter = require('./routes/customers');
-const GenresRouter = require('./routes/genres');
+const HomeRouter = require('./src/routes/home');
+const CustomersRouter = require('./src/routes/customers');
+const GenresRouter = require('./src/routes/genres');
 
 var app = express();
 app.use(express.json());
@@ -19,7 +18,6 @@ mongoose
   .catch((err) => console.log('Error connecting the database', err));
 
 app.use('/', HomeRouter);
-app.use('/api/courses', CoursesRouter);
 app.use('/api/customers', CustomersRouter);
 app.use('/api/genres', GenresRouter);
 
