@@ -6,6 +6,7 @@ require('dotenv').config();
 const HomeRouter = require('./src/routes/home');
 const CustomersRouter = require('./src/routes/customers');
 const GenresRouter = require('./src/routes/genres');
+const MoviesRouter = require('./src/routes/movies');
 
 var app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ mongoose
 app.use('/', HomeRouter);
 app.use('/api/customers', CustomersRouter);
 app.use('/api/genres', GenresRouter);
+app.use('/api/movies', MoviesRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
