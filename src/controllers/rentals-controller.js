@@ -3,8 +3,6 @@ const { Rental, validateRental } = require('../models/entities/rental');
 const { Movie } = require('../models/entities/movie');
 const { Customer } = require('../models/entities/customer');
 
-const router = express.Router();
-
 //Getting all the rentals
 const GetRentals = async (req, res) => {
   const rentals = await Rental.find().sort('-dateOut');
@@ -19,31 +17,22 @@ const CreateRental = async (req, res) => {
   if (!customer)
     return res.status(404).send('Customer with the given id not found');
 
-  const movie = await Movie.findById(req.body.movieId).populate('genre');
+  const movie = await Movie.findById(req.body.movieId);
   if (!movie) return res.status(404).send('Movie with the given id not found');
 
   if (movie.numberInStock === 0)
     return res.status(400).send('Movie is out of stock');
-
   let rental = new Rental({
-    customer: {
-      _id: customer._id,
-      email: customer.email,
-      name: customer.name,
-      phone: customer.phone,
-    },
-    movie: {
-      _id: movie._id,
-      title: movie.title,
-      genre: movie.genre.name,
-      dailyRentalRate: movie.dailyRentalRate,
-    },
+    customer: customer.id,
+    movie: movie.id,
   });
   rental = await rental.save();
-  console.log(movie.genre.name);
   movie.numberInStock--;
   movie.save();
-
+  //populate the customer and rental:
+  rental = await (
+    await rental.populate('customer', 'name')
+  ).populate('movie', 'title, genre');
   res.status(201).send(rental);
 };
 
