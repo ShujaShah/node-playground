@@ -49,6 +49,9 @@ const GetRental = async (req, res) => {
   const rental = await Rental.findById(req.params.id);
   if (!rental)
     return res.status(404).send('Rental with the given id not found');
+  rental = await rental
+    .populate('customer', 'name email')
+    .populate('movie', 'title genre');
   res.status(201).send(rental);
 };
 module.exports = {
