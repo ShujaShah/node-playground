@@ -31,7 +31,7 @@ const CreateRental = async (req, res) => {
   movie.save();
   //populate the customer and rental:
   rental = await (
-    await rental.populate('customer', 'name')
+    await rental.populate('customer', 'name email')
   ).populate('movie', 'title, genre');
   res.status(201).send(rental);
 };
